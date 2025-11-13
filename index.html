@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonjour Café Bistro - San Luis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Lato:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #000000;
+            color: #f5f5f5;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #000000 0%, #0d0d0d 100%);
+            padding: 3rem 1rem 2.5rem;
+            text-align: center;
+            border-bottom: 2px solid #af9355;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-circle {
+            width: 140px;
+            height: 140px;
+            border: 3px solid #af9355;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.08) 0%, transparent 70%);
+            position: relative;
+        }
+
+        .logo-b {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            color: #af9355;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .cafe-info {
+            margin-top: 0rem;
+        }
+
+        .cafe-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #af9355;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 0.3rem;
+        }
+
+        .cafe-subtitle {
+            color: #b8a890;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .filter-container {
+            background: rgba(20, 16, 12, 0.98);
+            padding: 1.2rem;
+            margin: 0;
+            max-width: 100%;
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-x: auto;
+            overflow-y: hidden;
+            border-bottom: 1px solid #af9355;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #af9355 rgba(20, 16, 12, 0.5);
+        }
+
+        .filter-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .filter-container::-webkit-scrollbar-track {
+            background: rgba(20, 16, 12, 0.5);
+        }
+
+        .filter-container::-webkit-scrollbar-thumb {
+            background: #af9355;
+            border-radius: 3px;
+        }
+
+        .filter-container::-webkit-scrollbar-thumb:hover {
+            background: #c99555;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid #af9355;
+            color: #af9355;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+        }
+
+        .filter-btn:hover {
+            background: #af9355;
+            color: #0d0d0d;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #af9355;
+            color: #0d0d0d;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+
+        .category {
+            background: linear-gradient(135deg, rgba(30, 25, 20, 0.5) 0%, rgba(20, 16, 12, 0.5) 100%);
+            border: 1px solid rgba(212, 165, 116, 0.25);
+            padding: 2.5rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #af9355 50%, transparent 100%);
+        }
+
+        .category.hidden {
+            display: none;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #af9355;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-subtitle {
+            color: #b8a890;
+            font-size: 0.85rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 2rem; /* Espacio para separar imagen y texto */
+            background: rgba(15, 12, 10, 0.6);
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            padding: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu-item::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #af9355;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-item:hover {
+            border-color: rgba(212, 165, 116, 0.4);
+            transform: translateX(5px);
+        }
+
+        .menu-item:hover::after {
+            opacity: 1;
+        }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Asegura que el precio se alinee con la parte superior del título */
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-name {
+            font-size: 1.2rem; 
+            color: #f5f5f5;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: normal;
+            /* Permite que el texto se envuelva en varias líneas (3 o más) sin truncarse */
+            max-width: 70%; 
+        }
+
+        .item-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #af9355;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0; 
+            line-height: 1.2; 
+        }
+
+        .item-description {
+            font-size: 0.9rem;
+            color: #b8a890;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .special-badge {
+            background: #af9355;
+            color: #0d0d0d;
+            padding: 0.25rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .item-image-container {
+            width: 100px; 
+            height: 100px; 
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+            filter: brightness(0.85) saturate(1.1);
+        }
+
+        .menu-item:hover .item-image {
+            transform: scale(1.08);
+            filter: brightness(1) saturate(1.2);
+        }
+
+        .location-section {
+            background: linear-gradient(135deg, rgba(30, 25, 20, 0.5) 0%, rgba(20, 16, 12, 0.5) 100%);
+            border: 1px solid rgba(212, 165, 116, 0.25);
+            padding: 2.5rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .location-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #af9355 50%, transparent 100%);
+        }
+
+        .location-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #af9355;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .location-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #b8a890;
+            font-size: 1rem;
+        }
+
+        .location-info p {
+            margin-bottom: 0.8rem;
+        }
+
+        .location-info i {
+            color: #af9355;
+            margin-right: 0.5rem;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border: 2px solid rgba(212, 165, 116, 0.3);
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #25d366, #1fa855);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.15);
+            box-shadow: 0 8px 35px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-float i {
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a1410 0%, #0d0d0d 100%);
+            padding: 1rem 1rem;
+            text-align: center;
+            color: #b8a890;
+            border-top: 2px solid #af9355;
+        }
+
+        footer p {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .footer-icon {
+            color: #af9355;
+            margin: 0 0.5rem;
+        }
+
+        .social-links {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .social-links a {
+            color: #af9355;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: #c99555;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .logo-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .logo-b {
+                font-size: 3.5rem;
+            }
+
+            .cafe-title {
+                font-size: 1.7rem;
+            }
+
+            .category-title {
+                font-size: 2.2rem;
+            }
+
+            .category {
+                padding: 2rem 1.25rem;
+            }
+
+            .filter-container {
+                padding: 1rem;
+                gap: 0.6rem;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.75rem;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+
+            .whatsapp-float {
+                width: 60px;
+                height: 60px;
+                bottom: 22px;
+                right: 22px;
+            }
+
+            .whatsapp-float i {
+                font-size: 2.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 2.5rem 1rem 2rem;
+            }
+
+            .logo-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .logo-b {
+                font-size: 3rem;
+            }
+
+            .cafe-title {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 0.75rem;
+            }
+
+            .category {
+                padding: 1.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo-circle">
+                <img src="./bonjour logo.png" alt="logo-bonjour">
+            </div>
+            <div class="cafe-info">
+                <h1 class="cafe-title">Café Bistro</h1>
+                <p class="cafe-subtitle">Elegancia Parisina</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">
+            <i class="fas fa-list"></i> Todos
+        </button>
+        <button class="filter-btn" data-filter="desayunos">
+            <i class="fas fa-croissant"></i> Desayunos
+        </button>
+        <button class="filter-btn" data-filter="brunch">
+            <i class="fas fa-utensils"></i> Brunch
+        </button>
+        <button class="filter-btn" data-filter="almuerzos">
+            <i class="fas fa-plate-wheat"></i> Almuerzos
+        </button>
+        <button class="filter-btn" data-filter="sandwiches">
+            <i class="fas fa-bread-slice"></i> Sandwiches
+        </button>
+        <button class="filter-btn" data-filter="dulces">
+            <i class="fas fa-cake-candles"></i> Dulces
+        </button>
+        <button class="filter-btn" data-filter="bebidas">
+            <i class="fas fa-mug-hot"></i> Bebidas
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="category" data-category="desayunos">
+            <div class="category-header">
+                <h2 class="category-title">Desayunos</h2>
+                <p class="category-subtitle">El comienzo perfecto de tu día</p>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Desayuno Completo</div>
+                            <div class="item-price">$4.800</div>
+                        </div>
+                        <div class="item-description">Café o té, 3 medialunas, manteca, mermelada y jugo de naranja exprimido</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" alt="Desayuno Completo" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Tostadas Francesas</div>
+                            <div class="item-price">$5.200</div>
+                        </div>
+                        <div class="item-description">Pan artesanal con huevo, canela, miel de maple y frutos rojos</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400" alt="Tostadas Francesas" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="special-badge"><i class="fas fa-star"></i> Especial</div>
+                        <div class="item-header">
+                            <div class="item-name">Desayuno Parisino</div>
+                            <div class="item-price">$6.500</div>
+                        </div>
+                        <div class="item-description">Croissant artesanal, jamón crudo, queso brie, café expreso y jugo natural</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1533777324565-a040eb52facd?w=400" alt="Desayuno Parisino" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Bowl Saludable</div>
+                            <div class="item-price">$5.800</div>
+                        </div>
+                        <div class="item-description">Yogurt griego, granola casera, frutas frescas, miel y frutos secos</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400" alt="Bowl Saludable" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Avocado Toast</div>
+                            <div class="item-price">$6.200</div>
+                        </div>
+                        <div class="item-description">Pan multicereales, palta, huevo poché, tomates cherry y semillas</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400" alt="Avocado Toast" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Medialunas x 3</div>
+                            <div class="item-price">$2.900</div>
+                        </div>
+                        <div class="item-description">Medialunas de manteca recién horneadas</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1545665225-b23b99e4d45e?w=400" alt="Medialunas" class="item-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category" data-category="brunch">
+            <div class="category-header">
+                <h2 class="category-title">Brunch</h2>
+                <p class="category-subtitle">Tradición y sabor combinados</p>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Eggs Benedict</div>
+                            <div class="item-price">$7.800</div>
+                        </div>
+                        <div class="item-description">Muffin inglés, jamón, huevos pochados y salsa holandesa</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1525351326368-efbb5cb6814d?w=400" alt="Eggs Benedict" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Omelette Francés</div>
+                            <div class="item-price">$6.900</div>
+                        </div>
+                        <div class="item-description">Omelette con queso gruyere, champiñones y finas hierbas</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400" alt="Omelette Francés" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Croissant Premium</div>
+                            <div class="item-price">$6.500</div>
+                        </div>
+                        <div class="item-description">Croissant relleno de jamón crudo, rúcula, tomates secos y queso</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=400" alt="Croissant Premium" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Focaccia Mediterránea</div>
+                            <div class="item-price">$7.500</div>
+                        </div>
+                        <div class="item-description">Focaccia con pesto, mozzarella de búfala, rúcula y tomate</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1619096252214-ef06c45683e3?w=400" alt="Focaccia Mediterránea" class="item-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category" data-category="almuerzos">
+            <div class="category-header">
+                <h2 class="category-title">Almuerzos</h2>
+                <p class="category-subtitle">Sabores que conquistan</p>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="special-badge"><i class="fas fa-tag"></i> Menú del Día</div>
+                        <div class="item-header">
+                            <div class="item-name">Menú Ejecutivo</div>
+                            <div class="item-price">$8.200</div>
+                        </div>
+                        <div class="item-description">Entrada + Plato principal + Postre + Bebida (Lun a Vie 12 a 15hs)</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="Menú Ejecutivo" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Quiche Lorraine</div>
+                            <div class="item-price">$7.900</div>
+                        </div>
+                        <div class="item-description">Tarta francesa con panceta, queso gruyere y ensalada verde</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400" alt="Quiche Lorraine" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Pasta Fresca del Día</div>
+                            <div class="item-price">$8.800</div>
+                        </div>
+                        <div class="item-description">Pasta artesanal con salsas a elección: pesto, carbonara o pomodoro</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400" alt="Pasta Fresca" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Ensalada César</div>
+                            <div class="item-price">$7.500</div>
+                        </div>
+                        <div class="item-description">Lechuga romana, pollo grillado, crutones, parmesano y aderezo césar</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400" alt="Ensalada César" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Pizza Artesanal</div>
+                            <div class="item-price">$8.500</div>
+                        </div>
+                        <div class="item-description">Masa madre, mozzarella, tomates cherry, albahaca y aceite de oliva</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400" alt="Pizza Artesanal" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Empanadas Gourmet x 6</div>
+                            <div class="item-price">$7.200</div>
+                        </div>
+                        <div class="item-description">Carne cortada a cuchillo, jamón y queso azul, o caprese</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400" alt="Empanadas" class="item-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category" data-category="sandwiches">
+            <div class="category-header">
+                <h2 class="category-title">Sandwiches</h2>
+                <p class="category-subtitle">Premium y deliciosos</p>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Baguette de Ternera</div>
+                            <div class="item-price">$9.500</div>
+                        </div>
+                        <div class="item-description">Ternera, queso dambo, tomate, rúcula y mostaza dijon</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://i.pinimg.com/736x/da/82/6d/da826d1e0f7782a856589b8d24d1d5e8.jpg" alt="Baguette" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Club Sandwich</div>
+                            <div class="item-price">$8.900</div>
+                        </div>
+                        <div class="item-description">Triple de pan de miga, pollo, panceta, huevo, lechuga y tomate</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400" alt="Club Sandwich" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Croque Monsieur</div>
+                            <div class="item-price">$8.200</div>
+                        </div>
+                        <div class="item-description">Sandwich francés con jamón, queso gruyere gratinado y salsa bechamel</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1619096252214-ef06c45683e3?w=400" alt="Croque Monsieur" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Hamburguesa Gourmet</div>
+                            <div class="item-price">$9.800</div>
+                        </div>
+                        <div class="item-description">Carne premium 200g, queso cheddar, cebolla caramelizada y papas</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" alt="Hamburguesa Gourmet" class="item-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category" data-category="dulces">
+            <div class="category-header">
+                <h2 class="category-title">Pastelería</h2>
+                <p class="category-subtitle">Dulces tentaciones francesas</p>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Cheesecake de Frutos Rojos</div>
+                            <div class="item-price">$4.800</div>
+                        </div>
+                        <div class="item-description">Cheesecake cremoso con salsa de frutos del bosque</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400" alt="Cheesecake" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Tarta de Limón</div>
+                            <div class="item-price">$4.500</div>
+                        </div>
+                        <div class="item-description">Tarta de limón con merengue italiano gratinado</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400" alt="Tarta de Limón" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="special-badge"><i class="fas fa-crown"></i>Destacado</div>
+                        <div class="item-header">
+                            <div class="item-name">Macarons Franceses x 6</div>
+                            <div class="item-price">$5.200</div>
+                        </div>
+                        <div class="item-description">Surtido de macarons artesanales de diferentes sabores</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400" alt="Macarons" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Brownie con Helado</div>
+                            <div class="item-price">$4.200</div>
+                        </div>
+                        <div class="item-description">Brownie tibio con helado de vainilla y salsa de chocolate</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400" alt="Brownie" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Tiramisú Casero</div>
+                            <div class="item-price">$4.900</div>
+                        </div>
+                        <div class="item-description">Postre italiano con café, mascarpone y cacao</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400" alt="Tiramisú" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Crème Brûlée</div>
+                            <div class="item-price">$5.500</div>
+                        </div>
+                        <div class="item-description">Crema de vainilla con azúcar caramelizada crujiente</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400" alt="Crème Brûlée" class="item-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category" data-category="bebidas">
+            <div class="category-header">
+                <h2 class="category-title">Cafetería</h2>
+                <p class="category-subtitle">Café de especialidad y más</p>
+            </div>
+            <div class="menu-list">
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Espresso</div>
+                            <div class="item-price">$2.500</div>
+                        </div>
+                        <div class="item-description">Café espresso de grano seleccionado</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=400" alt="Espresso" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Cappuccino</div>
+                            <div class="item-price">$3.800</div>
+                        </div>
+                        <div class="item-description">Espresso con espuma de leche cremosa y cacao</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400" alt="Cappuccino" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Latte Macchiato</div>
+                            <div class="item-price">$4.000</div>
+                        </div>
+                        <div class="item-description">Café con leche vaporizada y latte art</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400" alt="Latte" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Flat White</div>
+                            <div class="item-price">$3.900</div>
+                        </div>
+                        <div class="item-description">Doble espresso con microespuma sedosa</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=400" alt="Flat White" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Frappé de Café</div>
+                            <div class="item-price">$4.500</div>
+                        </div>
+                        <div class="item-description">Café helado con crema batida y caramelo</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1517578239113-b03992dcdd25?w=400" alt="Frappé" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Chocolate Caliente</div>
+                            <div class="item-price">$3.500</div>
+                        </div>
+                        <div class="item-description">Chocolate belga con crema batida y malvaviscos</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400" alt="Chocolate Caliente" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Té de Autor</div>
+                            <div class="item-price">$2.800</div>
+                        </div>
+                        <div class="item-description">Selección de tés premium: negro, verde, blanco o frutales</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400" alt="Té" class="item-image">
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-content">
+                        <div class="item-header">
+                            <div class="item-name">Jugos Naturales</div>
+                            <div class="item-price">$3.200</div>
+                        </div>
+                        <div class="item-description">Naranja, pomelo o limonada exprimidos al momento</div>
+                    </div>
+                    <div class="item-image-container">
+                        <img src="https://i.pinimg.com/736x/96/3e/45/963e4532df881254a267e37ce9e1c14c.jpg" alt="Jugos" class="item-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="location-section">
+            <h2 class="location-title">Visitanos</h2>
+            <div class="location-info">
+                <p><i class="fas fa-map-pin"></i> Pringles 1044</p>
+                <p><i class="fas fa-clock"></i> Lunes a Viernes: 8:00 - 23:00hs | Sábados: 9:00 - 23:00hs</p>
+                <p><i class="fas fa-phone"></i> +54 266 487-8958 (Centro)</p>
+                <p><i class="fas fa-phone"></i> +54 266 400-1545 (Shopping)</p>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3334.6096607545073!2d-66.3406804243569!3d-33.30287348996944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95d439bc0b316c2b%3A0xa227e9724a921799!2sBonjour%20Cafe%20Bistro%20Centro!5e0!3m2!1ses!2sar!4v1763076134504!5m2!1ses!2sar" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <br>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3334.4775472588417!2d-66.32579942435667!3d-33.30632869014568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95d43c03ecf24923%3A0xb255203fad1fe084!2sSan%20Luis%20Shopping!5e0!3m2!1ses!2sar!4v1763076364158!5m2!1ses!2sar"
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="social-links">
+            <a href="https://www.instagram.com/bonjourcafebistro_" target="_blank" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 0.6rem; color: #af9355;">Bonjour Café Bistro © 2025 - Elegancia Parisina <br>Desarrollado por @sageeDev</p>
+    </footer>
+
+    <script>
+        // Funcionalidad de filtrado por categorías
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const categories = document.querySelectorAll('.category');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover clase active de todos los botones
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Agregar clase active al botón clickeado
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Mostrar/ocultar categorías según el filtro
+                categories.forEach(category => {
+                    if (filterValue === 'all') {
+                        category.classList.remove('hidden');
+                    } else {
+                        if (category.getAttribute('data-category') === filterValue) {
+                            category.classList.remove('hidden');
+                        } else {
+                            category.classList.add('hidden');
+                        }
+                    }
+                });
+                
+                // Scroll suave hacia el inicio del contenedor
+                window.scrollTo({
+                    top: document.querySelector('.filter-container').offsetTop - 10,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Efecto parallax suave en el header al hacer scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const header = document.querySelector('header');
+            if (header && scrolled < 500) {
+                header.style.opacity = 1 - (scrolled / 800);
+            }
+        });
+    </script>
+</body>
+</html>
